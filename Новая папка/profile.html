@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+</head>
+<body>
+    <h1>Profile</h1>
+    <div id="profile"></div>
+    <a href="/users.html">View Users</a>
+    <script>
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = '/login.html';
+        }
+
+        fetch('https://localhost:7063/me', {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('profile').innerHTML = `
+                Full Name: ${data.fullName}<br>
+                Group: ${data.group}<br>
+                Gender: ${data.gender}<br>
+                Login: ${data.login}
+            `;
+        })
+        .catch(() => {
+            window.location.href = 'login.html';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users</title>
+</head>
+<body>
+    <h1>Users</h1>
+    <div id="users"></div>
+    <script>
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = '/login.html';
+        }
+
+        fetch('https://localhost:7063/users', {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            const usersList = data.map(user => `<div>${user.fullName} - ${user.group}</div>`).join('');
+            document.getElementById('users').innerHTML = usersList;
+        })
+        .catch(() => {
+            window.location.href = '/login.html';
+        });
+    </script>
+</body>
+</html>
